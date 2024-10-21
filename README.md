@@ -57,7 +57,6 @@ pip install -r requirements.txt
 
 For Node.js:
 ```bash
-cd client
 npm install
 ```
 
