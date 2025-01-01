@@ -59,19 +59,17 @@ def main():
 
             git.execute(push=False, date=date)
 
-        git.push()
-
         system.next_day()
 
         time_records.append(time.time() - starting_time)
 
-        for _ in range(10):
-            approx_time = round(
-                int(statistics.mean(time_records) * (system.days - day_counter)) / 60, 2
-            )
-            print(f"Aprox. estimated time to finish: {approx_time} minutes")
-
         day_counter += 1
+        if day_counter % 30 == 0:
+            print(f"Generated commits for {day_counter}/{system.days} days...")
+
+    print("Pushing all generated commits to GitHub...")
+    git.push()
+    print("All commits pushed successfully!")
 
 
 def read_date(date: str):
