@@ -68,9 +68,8 @@ python app.py
 ```
 
 ### 4. Start the Node.js Chat Server:
-Open a separate terminal, navigate to the `client` folder, and run:
+Open a separate terminal, navigate to the `root` folder, and run:
 ```bash
-cd client
 node server.js
 ```
 
@@ -82,7 +81,7 @@ node server.js
 Once the server is up and running, open your web browser and go to:
 
 ```
-http://localhost:3000
+http://localhost:1000
 ```
 
 ### 2. Enter your Username and Language
