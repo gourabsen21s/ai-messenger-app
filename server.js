@@ -1,7 +1,10 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-const axios = require('axios');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+const genAI = new GoogleGenerativeAI("API KEY");  
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const app = express();
 const server = http.createServer(app);
@@ -9,50 +12,86 @@ const io = socketIo(server);
 
 app.use(express.static('frontend'));
 
-let users = {};
+let chatRooms = {}; 
+
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
-    socket.on('join', ({ username, language }) => {
-        users[socket.id] = { username, language };
-        console.log(`${username} (${language}) has joined the chat.`);
+
+    socket.on('create_chat', ({ username, language }) => {
+        const secretKey = Math.random().toString(36).substr(2, 8);
+        chatRooms[secretKey] = { users: {} };
+        chatRooms[secretKey].users[socket.id] = { username, language };
+        socket.join(secretKey);
+        socket.emit('chat_created', { secretKey });
+
+        io.to(secretKey).emit('chat_joined', { username });
+        console.log(`Chat created with secret key: ${secretKey}`);
     });
-    socket.on('send_message', async (data) => {
-        const sender = users[socket.id];
-        const message = data.message;
-        for (let [socketId, user] of Object.entries(users)) {
-            if (socketId !== socket.id) {
-                const translatedMessage = await translateMessage(message, sender.language, user.language);
-                io.to(socketId).emit('receive_message', {
-                    sender: sender.username,
-                    message: translatedMessage
-                });
-            }
+
+    socket.on('join_chat', ({ secretKey, username, language }) => {
+        if (chatRooms[secretKey]) {
+            chatRooms[secretKey].users[socket.id] = { username, language };
+            socket.join(secretKey);
+            io.to(secretKey).emit('chat_joined', { username });
+            console.log(`${username} joined chat: ${secretKey}`);
+        } else {
+            socket.emit('chat_error', { message: 'Invalid secret key' });
         }
     });
+
+    socket.on('send_message', async ({ secretKey, message }) => {
+        if (chatRooms[secretKey] && chatRooms[secretKey].users[socket.id]) {
+            const sender = chatRooms[secretKey].users[socket.id];
+
+            for (let [socketId, user] of Object.entries(chatRooms[secretKey].users)) {
+                if (socketId !== socket.id) { 
+                    const translatedMessage = await translateMessage(message, sender.language, user.language);
+                    io.to(socketId).emit('receive_message', {
+                        sender: sender.username,
+                        message: translatedMessage
+                    });
+                }
+            }
+
+            socket.emit('receive_message', {
+                sender: "You",
+                message: message
+            });
+        } else {
+            socket.emit('chat_error', { message: 'You are not part of this chat' });
+        }
+    });
+
+
     socket.on('disconnect', () => {
+        for (let secretKey in chatRooms) {
+            if (chatRooms[secretKey].users[socket.id]) {
+                delete chatRooms[secretKey].users[socket.id];
+
+                if (Object.keys(chatRooms[secretKey].users).length === 0) {
+                    delete chatRooms[secretKey]; 
+                }
+            }
+        }
         console.log('A user disconnected:', socket.id);
-        delete users[socket.id];
     });
 });
+
+
 async function translateMessage(message, fromLang, toLang) {
-    if (fromLang === toLang) {
-        return message; 
-    }
+    if (fromLang === toLang) return message;
 
     try {
-        const response = await axios.post('http://localhost:8000/translate', {
-            message,
-            fromLang,
-            toLang
-        });
-        return response.data.translatedText;
+        const prompt = `Translate the following message from ${fromLang} to ${toLang}: "${message}"`;
+        const result = await model.generateContent(prompt);
+        return result.response.text();
     } catch (error) {
-        console.error('Error during translation:', error);
-        return message; 
+        console.error('Translation error:', error);
+        return message;
     }
 }
 
 const PORT = 1000;
 server.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
