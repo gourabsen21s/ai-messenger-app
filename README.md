@@ -1,4 +1,4 @@
-# 🌍 Multilingual Real-Time Chat Application 🌍
+# 🌍ECHOVERSE Multilingual Real-Time Chat Application 🌍
 
 ## 🚀 Project Overview
 
