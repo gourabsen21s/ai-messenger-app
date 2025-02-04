@@ -1,7 +1,7 @@
 {
   "name": "ai-messenger",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"   
@@ -9,12 +9,14 @@
   "keywords": [],
   "author": "Gourab Sen",
   "license": "ISC",
-  "description": "",
+  "description": "A multilingual real-time chat app using Socket.io",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "axios": "^1.7.9",
-    "crypto": "^1.0.1",
     "express": "^4.21.2",
     "socket.io": "^4.8.1"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
