@@ -1,6 +1,5 @@
 const socket = io();
 let secretKey = null;
-
 document.getElementById('create-chat-btn').addEventListener('click', () => {
     const username = document.getElementById('username').value;
     const language = document.getElementById('language').value;
