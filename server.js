@@ -3,7 +3,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const genAI = new GoogleGenerativeAI("API KEY");  
+const genAI = new GoogleGenerativeAI(process.env.KEY);  
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const app = express();
