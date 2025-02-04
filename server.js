@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const path = require('path');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.KEY);  
@@ -12,7 +13,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-app.use(express.static('frontend'));
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 let chatRooms = {}; 
 
