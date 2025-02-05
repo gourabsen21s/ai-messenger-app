@@ -32,7 +32,7 @@ Users select their known language, send messages, and receive translated respons
 
 Check out a live demo of the project:
 
-**[Live Demo Link](#)** _(Add your link here when hosted)_
+**[Live Demo Link](https://echoverse.azurewebsites.net)**
 
 ---
 
