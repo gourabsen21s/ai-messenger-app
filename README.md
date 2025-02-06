@@ -1,6 +1,6 @@
 # 🌍EchoVerse - Multilingual Real-Time Chat Application 🌍
 
---
+---
 
 ## 📋 Table of Contents
 - [Project Overview](#-project-overview)
@@ -12,14 +12,14 @@
 - [License](#-license)
 - [Contact](#Contact)
 
---
+---
 
 ## 🚀 Project Overview
 
 AI Chat Translator is an open-source web application designed to break language barriers by providing real-time translation during chat conversations. Leveraging cutting-edge AI technology and deployed on Microsoft Azure, this application enables users to communicate seamlessly across different languages, making global communication more accessible than ever.
 The primary goal of AI Chat Translator is to facilitate effortless multilingual communication. Whether for personal use, business collaboration, or social interaction, users can engage in conversations without worrying about language differences. By translating messages in real time, the application ensures that conversations feel natural and fluid, enhancing the overall user experience.
 
---
+---
 
 ### ✨ Features
 🌍 Seamless Communication: Chat with anyone, anywhere, in any language without hesitation. Our intelligent system ensures fluid and natural conversations across linguistic boundaries.
@@ -144,7 +144,7 @@ Our application is deployed on Azure and is accessible from the internet. To dep
 
   Consider implementing Azure features like Azure Autoscale and Azure Load Balancer for better scalability.
 
---
+---
 
 ## 📂 Directory Structure
 
