@@ -242,7 +242,7 @@ This project uses open-source libraries from the amazing communities at:
 
 Project Maintainers: Gourab Sen, Souvik Nayak
 
-Email: souviknayak238@gmail.com,
+Email: souviknayak238@gmail.com, gourabsen.21.2001@gmail.com
 
 Feel free to reach out with any questions or suggestions.
 ---
